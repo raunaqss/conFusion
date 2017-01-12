@@ -28,7 +28,7 @@ gulp.task('usemin', ['jshint'], function() {
     return gulp.src('./app/menu.html')
     .pipe(plugs.usemin({
         css: [plugs.minifyCss(),plugs.rev()],
-        js: [plugs.uglify(),plugs.rev()]
+        js: [plugs.ngAnnotate(),plugs.uglify(),plugs.rev()]
     }))
     .pipe(gulp.dest('dist/'));
 });
