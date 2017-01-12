@@ -1,3 +1,4 @@
+/*jshint node: true */
 'use strict';
 angular.module('confusionApp', []).controller('menuController', function() {
 
