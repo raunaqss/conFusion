@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="confusionApp">
+
+<head>
+     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head
+         content must come *after* these tags -->
+    <title>Ristorante Con Fusion: Menu</title>
+        <!-- Bootstrap -->
+<!-- build:css styles/main.css -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="styles/bootstrap-social.css" rel="stylesheet">
+    <link href="styles/mystyles.css" rel="stylesheet">
+<!-- endbuild -->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row row-content" ng-controller="DishDetailController">
+            <div class="col-xs-12">
+              <div class="media">
+                  <div class="media-left media-middle">
+                      <a href="#">
+                          <img class="media-object thumbnail"
+                           ng-src="{{dish.image}}" alt="{{dish.name}}">
+                      </a>
+                  </div>
+                  <div class="media-body">
+                      <h2 class="media-heading">
+                          {{ dish.name }}
+                          <span class="label label-danger">{{dish.label}}</span>
+                          <span class="badge">{{dish.price | currency}}</span>
+                      </h2>
+                      <p>{{dish.description}}</p>
+                  </div>
+              </div>
+            </div>
+            <div class="col-xs-9 col-xs-offset-1">
+                <ul class="list-inline">
+                    <li>
+                        <h4>
+                            Customer Comments
+                        </h4>
+                    </li>
+                    <li>
+                        <h4>
+                            <small>Sort by: </small>
+                            <input type="text" ng-model="sort" />
+                        </h4>
+                    </li>
+                </ul>
+                <ul class="list-unstyled">
+                    <li ng-repeat="comment in dish.comments | orderBy:sort">
+                        <blockquote>
+                            <p>{{comment.rating}} Stars</p>
+                            <p>{{comment.comment}}</p>
+                            <footer>{{comment.author}}, {{comment.date | date:'MMM. dd, yyyy'}}</footer>
+                        </blockquote>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-9 col-xs-offset-1" ng-controller="DishCommentController">
+                <ul class="list-unstyled" ng-show="comment.comment && comment.author">
+                    <blockquote>
+                        <p>{{comment.rating}} Stars</p>
+                        <p>{{comment.comment}}</p>
+                        <footer>{{comment.author}}, {{comment.date | date: 'MMM. dd, yyyy'}}</footer>
+                    </blockquote>
+                </ul>
+                <form class="form-horizontal" name="commentForm"
+                    ng-submit="submitComment()"  novalidate>
+                    <div class="form-group" ng-class="{ 'has-error': commentForm.author.$invalid &&
+                        !commentForm.author.$pristine }">
+                        <label for="author" class="col-sm-2 control-label">Your Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="author" name="author"
+                                ng-model="comment.author" placeholder="Enter Your Name" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating" class="col-sm-2 control-label">Number of Stars</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline" ng-repeat="i in [1, 2, 3, 4, 5]">
+                                <input type="radio" name="rating" ng-model="comment.rating" ng-value="{{i}}"/> {{i}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group"
+                        ng-class="{ 'has-error': commentForm.comment.$invalid && !commentForm.comment.$pristine }">
+                        <label for="comment" class="col-sm-2 control-label">Your Comments</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="comment" id="comment" rows="8"
+                                ng-model="comment.comment" required></textarea>
+                            <span class="help-block"
+                                ng-show="commentForm.comment.$invalid && !commentForm.comment.$pristine">
+                                Your comments are required.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-10 col-sm-offset-2">
+                            <button type="submit" class="btn btn-primary"
+                                ng-disabled="commentForm.$invalid">
+                                Submit Comment
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+<!-- build:js scripts/main.js -->
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="scripts/app.js"></script>
+<!-- endbuild -->
+
+</body>
+
+</html>
