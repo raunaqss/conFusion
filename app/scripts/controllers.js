@@ -76,10 +76,10 @@ angular.module('confusionApp')
     }])
 
 
-    .controller('DishDetailController', ['$scope', 'menuFactory',
-        function($scope, menuFactory) {
+    .controller('DishDetailController', ['$scope', '$routeParams', 'menuFactory',
+        function($scope, $routeParams, menuFactory) {
 
-        var dish = menuFactory.getDish(0);
+        var dish = menuFactory.getDish(parseInt($routeParams.id, 10));
 
         $scope.dish = dish;
 
@@ -93,7 +93,7 @@ angular.module('confusionApp')
             rating: 5,
             comment: "",
             author: ""
-        }
+        };
 
         $scope.submitComment = function () {
 
@@ -112,7 +112,7 @@ angular.module('confusionApp')
                 rating: 5,
                 comment: "",
                 author: ""
-            }
-        }
+            };
+        };
     }])
 ;
