@@ -115,4 +115,22 @@ angular.module('confusionApp')
             };
         };
     }])
+
+
+    .controller('IndexController', ['$scope', 'menuFactory', 'corporateFactory',
+        function($scope, menuFactory, corporateFactory) {
+
+        var bestDish = 0;
+        var topLeadership = 3;
+
+        $scope.dish = menuFactory.getDish(bestDish);
+        $scope.promotion = menuFactory.getPromotion(0);
+        $scope.chef = corporateFactory.getLeader(topLeadership);
+    }])
+
+
+    .controller('AboutController', ['$scope', 'corporateFactory',
+        function($scope, corporateFactory) {
+        $scope.leadership = corporateFactory.getLeaders();
+    }])
 ;
