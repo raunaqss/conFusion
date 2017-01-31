@@ -12,10 +12,9 @@ angular.module('confusionApp')
 
         $scope.dishes = [];
 
-        menuFactory.getDishes()
-        .then(
+        menuFactory.getDishes().query(
             function(response) {
-                $scope.dishes = response.data;
+                $scope.dishes = response;
                 $scope.showMenu = true;
             },
             function(response) {
@@ -95,10 +94,10 @@ angular.module('confusionApp')
         $scope.showDish = false;
         $scope.message = 'Loading...';
         $scope.dish = {};
-        menuFactory.getDish(parseInt($stateParams.id, 10))
-        .then(
+        menuFactory.getDishes().get({id: parseInt($stateParams.id, 10)})
+        .$promise.then(
             function(response) {
-                $scope.dish = response.data;
+                $scope.dish = response;
                 $scope.showDish = true;
             },
             function(response) {
@@ -109,7 +108,8 @@ angular.module('confusionApp')
     }])
 
 
-    .controller('DishCommentController', ['$scope', function($scope) {
+    .controller('DishCommentController', ['$scope', 'menuFactory',
+        function($scope, menuFactory) {
 
         //Step 1: Create a JavaScript object to hold the comment from the form
         $scope.comment = {
@@ -124,8 +124,9 @@ angular.module('confusionApp')
             $scope.comment.date = new Date().toISOString();
 
             // Step 3: Push your comment into the dish's comment array
-            $scope.dish.comments.push($scope.comment);
             console.log($scope.comment);
+            $scope.dish.comments.push($scope.comment);
+            menuFactory.getDishes().update({id: $scope.dish.id}, $scope.dish);
 
             //Step 4: reset your form to pristine
             $scope.commentForm.$setPristine();
@@ -148,10 +149,10 @@ angular.module('confusionApp')
         $scope.showDish = false;
         $scope.message = 'Loading...';
         $scope.dish = {};
-        menuFactory.getDish(bestDish)
-        .then(
+        menuFactory.getDishes().get({id: bestDish})
+        .$promise.then(
             function(response) {
-                $scope.dish = response.data;
+                $scope.dish = response;
                 $scope.showDish = true;
             },
             function(response) {
