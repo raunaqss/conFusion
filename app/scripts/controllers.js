@@ -7,8 +7,21 @@ angular.module('confusionApp')
         $scope.tab = 1;
         $scope.filtText = '';
         $scope.showDetails = false;
+        $scope.showMenu = false;
+        $scope.message = 'Loading...';
 
-        $scope.dishes = menuFactory.getDishes();
+        $scope.dishes = [];
+
+        menuFactory.getDishes()
+        .then(
+            function(response) {
+                $scope.dishes = response.data;
+                $scope.showMenu = true;
+            },
+            function(response) {
+                $scope.message = "Error: "+response.status+" "+response.statusText;
+            }
+        );
 
         $scope.select = function(setTab) {
             $scope.tab = setTab;
@@ -79,9 +92,19 @@ angular.module('confusionApp')
     .controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory',
         function($scope, $stateParams, menuFactory) {
 
-        var dish = menuFactory.getDish(parseInt($stateParams.id, 10));
-
-        $scope.dish = dish;
+        $scope.showDish = false;
+        $scope.message = 'Loading...';
+        $scope.dish = {};
+        menuFactory.getDish(parseInt($stateParams.id, 10))
+        .then(
+            function(response) {
+                $scope.dish = response.data;
+                $scope.showDish = true;
+            },
+            function(response) {
+                $scope.message = "Error: "+response.status+" "+response.statusText;
+            }
+        );
 
     }])
 
@@ -122,8 +145,19 @@ angular.module('confusionApp')
 
         var bestDish = 0;
         var topLeadership = 3;
-
-        $scope.dish = menuFactory.getDish(bestDish);
+        $scope.showDish = false;
+        $scope.message = 'Loading...';
+        $scope.dish = {};
+        menuFactory.getDish(bestDish)
+        .then(
+            function(response) {
+                $scope.dish = response.data;
+                $scope.showDish = true;
+            },
+            function(response) {
+                $scope.message = "Error: "+response.status+" "+response.statusText;
+            }
+        );
         $scope.promotion = menuFactory.getPromotion(0);
         $scope.chef = corporateFactory.getLeader(topLeadership);
     }])
